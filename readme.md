@@ -1,126 +1,124 @@
 # CAN304_CW
-Use the command "python app.py"
-## Project Overview
 
-This repository contains the code and supporting materials for the CAN304 coursework project.  
-The project focuses on a lightweight prototype for **secure text transmission with context-aware validation**, developed to demonstrate the design, implementation, and testing process of the coursework.
-
-The current prototype is based on the project topic:
-
-**Dynamic Watermarking for Secure Information Transmission**
-
-In this project, the term *watermark* does not refer to a traditional multimedia watermark embedded in images or audio. Instead, it is implemented as a **dynamic context-bound logical token** used to control whether a message is still valid under the intended receiving conditions.
-
----
-
-## Project Objectives
-
-The current prototype aims to demonstrate the following core ideas:
-
-- **Plaintext protection**  
-  Ensure that unauthorized parties cannot directly read the original plaintext during transmission.
-
-- **Dynamic watermark token**  
-  Generate a unique token for each message to improve security and flexibility.
-
-- **Context binding**  
-  Bind the token to metadata such as sender, receiver, timestamp, and message ID.
-
-- **One-time usage constraint**  
-  Ensure that a valid message becomes invalid after its first successful authorized use.
-
-- **Anomaly detection**  
-  Detect message tampering, token mismatch, metadata mismatch, replay, and reuse.
-
-- **Lightweight implementation**  
-  Keep the prototype simple and feasible within the coursework scope.
-
----
-
-## Current Prototype Scope
-
-The current version implements a **minimum viable prototype (MVP)** for secure text transmission.  
-Its workflow can be summarized as follows:
-
-1. The sender inputs a plaintext message.
-2. The system encrypts the message into ciphertext.
-3. The system generates:
-   - a dynamic watermark token
-   - an integrity tag
-   - a one-time usage constraint
-4. The sender outputs a package containing only ciphertext and verification-related information.
-5. The receiver verifies the package step by step.
-6. The receiver returns either:
-   - **ACCEPT** if all checks pass
-   - **REJECT** if any check fails
-
-This means a message is **not accepted simply because it can be decrypted**.  
-It is accepted only when it is decrypted under the correct context and has not already been consumed.
-
----
-
-## Repository Structure
-
-```text
-CAN304_CW/
-├─ app.py
-├─ config.py
-├─ crypto_utils.py
-├─ sender.py
-├─ receiver.py
-├─ storage.py
-├─ test_scenarios.py
-├─ requirements.txt
-├─ README.md
-└─ .gitignore
-
-# CAN304_CW
 ## 项目概述
-此存储库包含了 CAN304 课程作业项目的代码及相关辅助材料。
-该项目旨在开发一个轻量级的原型，用于实现具有上下文感知验证功能的**安全文本传输**，旨在展示该课程作业的设计、实现和测试过程。
-当前的原型是基于以下项目主题开发的：
-**动态水印技术在安全信息传输中的应用**
-在该项目中，“水印”这一术语并非指嵌入在图像或音频中的传统多媒体水印。而是被设计成一种“动态的、与上下文相关的逻辑标记”，用于控制消息在预期接收条件下的有效性。
+
+本仓库为 CAN304 课程作业项目的代码仓库，用于展示课程设计过程中的分析、实现与测试结果。
+
+当前项目主题为：
+
+**Dynamic Watermarking for Secure Information Transmission**  
+**信息传输安全中的动态水印原型**
+
+需要说明的是，本项目中的“watermark”并不是传统意义上嵌入图像、音频或视频中的多媒体水印，而是实现为一种**动态的、与上下文绑定的逻辑令牌（logical token）**，用于控制消息是否仍然在预期接收条件下有效。
+
+本项目当前实现的是一个**轻量级原型（lightweight prototype）**，重点不在于构建完整的工业级安全通信平台，而在于验证以下核心思想是否能够被清晰实现并正确运行：
+
+- 消息在传输中以密文形式存在；
+- 每条消息具有独立的动态 token；
+- token 与上下文信息绑定；
+- 消息在首次合法使用后失效；
+- 接收端能够识别篡改、上下文不匹配和重放/重复使用行为。
+
 ---
 
 ## 项目目标
-当前的原型旨在展示以下核心理念：
-- **明文保护**
-确保在传输过程中，未经授权的人员无法直接读取原始明文内容。
-- **动态水印令牌**
-为每条消息生成一个独特的令牌，以增强安全性并提高灵活性。
-- **上下文绑定**
-将令牌与诸如发送方、接收方、时间戳和消息 ID 等元数据进行绑定。
-- “一次性使用限制”
-确保有效消息在首次成功获得授权使用后即失效。
-- **异常检测**
-检测消息篡改、令牌不匹配、元数据不匹配、重放以及重复使用情况。
-- **轻量级实现**
-在课程范围内保持原型设计简洁且可行。
+
+当前原型旨在展示以下核心目标：
+
+- **明文保护（Plaintext Protection）**  
+  确保未经授权的第三方无法在传输过程中直接读取原始明文。
+
+- **动态水印令牌（Dynamic Watermark Token）**  
+  为每条消息生成一个独立的动态 token，以提高安全性和灵活性。
+
+- **上下文绑定（Context Binding）**  
+  将 token 与发送者、接收者、时间戳、消息 ID 等上下文信息绑定。
+
+- **一次性使用约束（One-Time Usage Constraint）**  
+  确保一条消息在第一次成功授权使用后即被视为已消费，后续再次提交将被拒绝。
+
+- **异常检测（Anomaly Detection）**  
+  检测消息篡改、token 不匹配、metadata 不匹配、重放和重复使用行为。
+
+- **轻量级实现（Lightweight Implementation）**  
+  保持系统结构简洁，便于在 CAN304 课程范围内实现、演示和扩展。
+
 ---
 
 ## 当前原型范围
-当前版本实现了用于安全文本传输的“最小可行原型”（MVP）。
-其工作流程可概括如下：
-1. 发送方输入一份明文信息。2. 该系统将消息加密为密文。3. 该系统生成以下内容：
-- 一个动态水印令牌
-- 一个完整性标签
-- 一次性的使用限制4. 发送方输出一个仅包含密文和相关验证信息的包裹。5. 收件人会逐步检查包裹。6. 接收方会做出如下两种回应：
-- 如果所有检查都通过，则回复“接受”；
-- 如果有任何一项检查未通过，则回复“拒绝”。
-这意味着一条信息不会仅仅因为能够被解密就被接受。
-只有在正确的情境下解密后且尚未被使用过的情况下，这条信息才会被接受。
+
+当前版本实现了一个用于安全文本传输的**最小可行原型（MVP）**。
+
+其核心流程如下：
+
+1. 发送端输入明文消息；
+2. 系统将明文加密为密文（ciphertext）；
+3. 系统生成：
+   - 动态 watermark token
+   - integrity tag（完整性标签）
+   - one-time usage state（一次性使用状态）
+4. 发送端输出一个 package，其中仅包含密文和相关验证信息，不包含明文；
+5. 接收端逐步执行验证；
+6. 系统返回：
+   - **ACCEPT**：所有检查通过
+   - **REJECT**：任一检查失败
+
+这意味着：  
+**消息不会仅仅因为“可以解密”就被接受，而只有在正确上下文下、且未被消费过时才会被接受。**
+
 ---
 
-## 存储库结构
-CAN304_CW/
-├─ app.py
-├─ config.py
-├─ crypto_utils.py
-├─ sender.py
-├─ receiver.py
-├─ storage.py
-├─ test_scenarios.py
-├─ requirements.txt
-├─ README.md
-└─ .gitignore
+## 当前版本特性
+
+当前版本已经实现以下功能：
+
+- 使用 AES-GCM 对消息进行加密与解密；
+- 为每条消息生成动态 context-bound token；
+- 对 package 核心字段生成 integrity tag；
+- 在接收端执行完整验证流程；
+- 支持 one-time usage 检测；
+- 支持 replay / reuse rejection；
+- 提供交互式菜单演示；
+- 提供一键自动完整演示流程；
+- 提供正式测试场景输出。
+
+---
+
+## 运行方式
+
+### 推荐环境
+
+- Python 3.14
+- Visual Studio Code
+- `venv` 虚拟环境
+
+### 安装依赖
+
+```bash
+pip install -r requirements.txt
+
+
+运行方式
+
+python app.py
+
+菜单功能说明
+
+运行 python app.py 后，会进入交互式菜单界面。
+
+当前菜单功能包括：
+
+1. Generate secure message package
+手动输入 sender、receiver 和 plaintext，生成一条安全消息 package。
+2. Verify current message package
+对当前内存中的 package 进行验证。
+3. Run validation scenarios
+运行正式测试场景，包括正常接收、篡改检测、token 不匹配、metadata 不匹配和重放测试。
+4. Reset one-time usage state
+清空当前 one-time usage 状态记录。
+5. Show current usage state count
+查看当前已消费消息数量。
+6. Run full automatic demo flow
+运行完整自动演示流程，适合测试、截图和录屏展示。
+0. Exit
+退出程序。
