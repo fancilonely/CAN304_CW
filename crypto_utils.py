@@ -97,7 +97,7 @@ def generate_integrity_tag(integrity_key: bytes, package_core: Dict[str, Any]) -
     """
     Generate integrity tag over package core fields.
     """
-    serialized = canonical_json(package_core)
+    serialized = canonical_json(data=package_core)
     return hmac.new(
         integrity_key,
         serialized.encode("utf-8"),
