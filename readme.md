@@ -4,7 +4,7 @@
 
 ### 代码层
 - 保留当前这套 core prototype
-- 升级 SQLite 持久化
+- 保持 SQLite 持久化
 - 支持 package 导出 / 加载
 - 保留自动 demo flow
 - 保留 validation scenarios
