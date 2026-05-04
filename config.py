@@ -1,11 +1,15 @@
 # config.py
+"""
+Central configuration for the CAN304 prototype.
+Team members should only change fixed global settings here.
+"""
 
 AES_KEY = b"0123456789ABCDEF0123456789ABCDEF"   # 32 bytes for AES-256
 TOKEN_KEY = b"token-secret-key-32-bytes-long!!"
 INTEGRITY_KEY = b"integrity-secret-key-32bytes!"
 
-# metadata time window in seconds
+# Allowed time difference (seconds) between current time and package timestamp
 ALLOWED_TIME_SKEW = 300
 
-# simple in-memory one-time usage record for prototype stage
-USED_MESSAGE_IDS: set[str] = set()
+# Package version for compatibility / future extension
+PACKAGE_VERSION = 1
