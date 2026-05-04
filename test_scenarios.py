@@ -16,11 +16,12 @@ from sender import package_message
 from receiver import verify_and_receive, rebuild_core
 from crypto_utils import generate_integrity_tag
 from config import INTEGRITY_KEY
-from storage import reset_used_messages
+from storage import reset_used_messages, init_storage
 from formatter import print_validation_header, print_validation_row
 
 
 def run_validation_scenarios() -> None:
+    init_storage()
     original_pkg = package_message(
         sender="alice",
         receiver="bob",

@@ -1,5 +1,5 @@
 # CAN304_CW
-
+Use the command "python app.py"
 ## Project Overview
 
 This repository contains the code and supporting materials for the CAN304 coursework project.  
